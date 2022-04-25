@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import date
 
 from htmlParser import loadWebUntisJson
 from urlParser import periods_url,classes_url
@@ -31,7 +32,7 @@ class Timetable:
     periods: list
 
 #[ Classes ]############################################################################
-def getSchoolClasses(school_id,base_domain):
+def getSchoolClasses(school_id: int,base_domain: str) -> list:
     school_classes = []
     loader = loadWebUntisJson(base_domain,school_id,classes_url(base_domain))
     classes_json = loader['data']['elements']
@@ -48,7 +49,7 @@ def getSchoolClasses(school_id,base_domain):
 
 
 #[ PERIODS ]############################################################################
-def getPeriods(base_domain,school_id,class_id,date):
+def getPeriods(base_domain: str,school_id: int,class_id: int,date: str) -> list:
     school_periods = []
 
     loader = loadWebUntisJson(
