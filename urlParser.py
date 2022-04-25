@@ -1,9 +1,3 @@
-# domain = "https://kephiso.webuntis.com/WebUntis/?school=GWS+Villingen#/basic/timetable"
-
-# domain
-
-# base_domain1 = "kephiso.webuntis.com"
-# base_domain = "hektor.webuntis.com"
 def session_starter(base_domain,school_id):
    return f'https://{base_domain}/WebUntis/?school={school_id}#/basic/timetable'
 

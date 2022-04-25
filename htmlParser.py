@@ -1,8 +1,5 @@
-import requests
 import json
 from urlParser import session_starter
-
-
 
 from requests_html import HTMLSession
 
