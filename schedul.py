@@ -1,35 +1,7 @@
-from dataclasses import dataclass
-from datetime import date
-
 from htmlParser import loadWebUntisJson
 from urlParser import periods_url,classes_url
+from schedul_util import *
 
-@dataclass
-class Class:
-    id: int
-    name: str
-
-@dataclass
-class SchoolClasses:
-    school: int
-    course: list
-
-@dataclass
-class Period:
-    id: int
-    name: str
-    date: int
-    start: int
-    end: int
-    changed: bool
-    room: int
-
-@dataclass
-class Timetable:
-    school_id: str
-    class_id: int
-    date: str
-    periods: list
 
 #[ Classes ]############################################################################
 def getSchoolClasses(school_id: int,base_domain: str) -> list:
