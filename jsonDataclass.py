@@ -1,21 +1,12 @@
-from cgitb import enable
 from dataclasses import dataclass
 
 from htmlParser import loadWebUntisJson
 from urlParser import periods_url,classes_url
 
-my_date = '2022-04-25'
-my_school_id = 'K175055'
-#2025
-course_id = '1646'
-school_classes = []
-school_periods = []
-
 @dataclass
 class Class:
     id: int
     name: str
-    # classteacher: str
 
 @dataclass
 class SchoolClasses:
@@ -30,18 +21,24 @@ class Period:
     start: int
     end: int
     changed: bool
+    room: int
+
+@dataclass
+class Timetable:
+    school_id: str
+    class_id: int
+    date: str
+    periods: list
 
 #[ Classes ]############################################################################
 def getSchoolClasses(school_id,base_domain):
+    school_classes = []
     loader = loadWebUntisJson(base_domain,school_id,classes_url(base_domain))
     classes_json = loader['data']['elements']
 
     for course in classes_json:
         id = course['id']
         name = course['name']
-        # teacher = str(course['classteacher']['name'])
-        # if teacher is None:
-        #     teacher = 'None'
         c = Class(id,name)
         school_classes.append(c)
         
@@ -52,6 +49,8 @@ def getSchoolClasses(school_id,base_domain):
 
 #[ PERIODS ]############################################################################
 def getPeriods(base_domain,school_id,class_id,date):
+    school_periods = []
+
     loader = loadWebUntisJson(
         base_domain,
         school_id,
@@ -59,7 +58,6 @@ def getPeriods(base_domain,school_id,class_id,date):
         )
     period_names = loader['data']['result']['data']['elements']
     periods_json = loader['data']['result']['data']['elementPeriods'][class_id]
-    # print(periods_json)
 
     for period in periods_json:
         id = period['id']
@@ -67,23 +65,26 @@ def getPeriods(base_domain,school_id,class_id,date):
         for name_element in period_names:
             if name_id['id'] == name_element['id'] and name_id['type'] == name_element['type']:
                 name = name_element['name']
+        room_id = period['elements'][2]
+        for room_element in period_names:
+            if room_id['id'] == room_element['id'] and room_id['type'] == room_element['type']:
+                room = room_element['name']
+            changed = False
+            if room_id['state'] == "SUBSTITUTED":
+                changed = True
         period_date = period['date']
         start = period['startTime']
         end = period['endTime']
-        changed = False
-        c = Period(id,name,period_date,start,end,changed)
-
-        c.changed = comparePeriod(c,school_periods)
+        
+        c = Period(id,name,period_date,start,end,changed,room)
         school_periods.append(c)
-        # print(school_periods)
-    
-    return school_periods
+        
+    timetable = Timetable(school_id,class_id,date,school_periods)
+    return timetable
 
 def comparePeriod(old_p,new_p):
     return False if old_p == new_p else True    
 
-# getSchoolClasses()
-# getPeriods()
 
 
 
