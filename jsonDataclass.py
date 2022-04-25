@@ -60,11 +60,14 @@ def getPeriods(base_domain,school_id,class_id,date):
     periods_json = loader['data']['result']['data']['elementPeriods'][class_id]
 
     for period in periods_json:
+        changed = False
         id = period['id']
         name_id = period['elements'][1]
         for name_element in period_names:
             if name_id['id'] == name_element['id'] and name_id['type'] == name_element['type']:
                 name = name_element['name']
+            if name_id['state'] == "SUBSTITUTED":
+                changed = True
         room_id = period['elements'][2]
         for room_element in period_names:
             if room_id['id'] == room_element['id'] and room_id['type'] == room_element['type']:
