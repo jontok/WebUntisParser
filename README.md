@@ -26,11 +26,11 @@ school_id | `WebUntis/?school=<school_id>#/`<br>copy only the school id
 Get all the Classes of your School.
 
 ```
-https://localhost:5000/periods/<base_domain>/<school_id>
+http://localhost:5000/periods/<base_domain>/<school_id>
 ```
 
 ### Timetable
 
 ```
-https://localhost:5000/periods/<base_domain>/<school_id>/<class_id>/<date>
+http://localhost:5000/periods/<base_domain>/<school_id>/<class_id>/<date>
 ```
