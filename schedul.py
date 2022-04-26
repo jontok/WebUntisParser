@@ -1,7 +1,8 @@
 from htmlParser import loadWebUntisJson
 from urlParser import periods_url,classes_url
 from schedul_util import *
-
+import operator
+import pandas as pd
 
 #[ Classes ]############################################################################
 def getSchoolClasses(school_id: int,base_domain: str) -> list:
@@ -54,8 +55,10 @@ def getPeriods(base_domain: str,school_id: int,class_id: int,date: str) -> list:
         
         c = Period(id,name,period_date,start,end,changed,room)
         school_periods.append(c)
+        school_periods = sorted(school_periods,key=operator.attrgetter("date","start"))
         
     timetable = Timetable(school_id,class_id,date,school_periods)
+    
     return timetable
 
 def comparePeriod(old_p,new_p):
