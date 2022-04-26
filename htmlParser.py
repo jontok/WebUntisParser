@@ -3,7 +3,7 @@ from urlParser import session_starter
 
 from requests_html import HTMLSession
 
-def loadWebUntisJson(base_domain: str,school_id: int,urlparser: function):
+def loadWebUntisJson(base_domain: str,school_id: int,urlparser: list):
     try:
         session = HTMLSession()
         session.get(session_starter(base_domain,school_id))
